@@ -123,8 +123,8 @@ stage_proceed_confirmation "updating config file secrets"
 echo "Updating the configuration secrets"
 docker exec $(get_service_containerid owncloud) \
        sed -i.orig \
-       -e "s/'secret'.*/'secret' => '$(oc_conf_read secret)',/" \
-       -e "s/'secret'.*/'passwordsalt' => '$(oc_conf_read passwordsalt)',/" \
+       -e "s#'secret'.*#'secret' => '$(oc_conf_read secret)',#" \
+       -e "s#'secret'.*#'passwordsalt' => '$(oc_conf_read passwordsalt)',#" \
        /var/www/owncloud/config/config.php
 stage_proceed_confirmation "updating system fingerprint"
 echo "Updating system fingerprint after db restore"
