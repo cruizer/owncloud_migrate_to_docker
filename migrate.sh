@@ -95,6 +95,7 @@ docker exec $(get_service_containerid owncloud) \
 stage_proceed_confirmation "copying the db backup to the volume"
 echo "Copying backup file to the db container volume"
 docker run \
+       --rm \
        --mount type=bind,src=${oc_backup_path},dst=/mnt \
        --mount type=volume,src=${stack_name}_backup,dst=/backup \
        ubuntu \
@@ -110,6 +111,7 @@ docker exec $(get_service_containerid db) \
 stage_proceed_confirmation "copying the OC file data"
 echo "Copying the file data to the container volume."
 docker run \
+       --rm \
        --mount type=bind,src=${oc_currdir}/data,dst=/mnt \
        --mount type=volume,src=${stack_name}_files,dst=/filesvol \
        ubuntu \
