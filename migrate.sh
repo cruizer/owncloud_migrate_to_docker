@@ -117,7 +117,7 @@ docker run \
        ubuntu \
        /bin/bash -c \
        "cp /filesvol/files/.htaccess /tmp; \
-       cp -r -p /mnt/* /filesvol/files; \
+       cp -rp /mnt/. /filesvol/files; \
        cp /tmp/.htaccess /filesvol/files"
 stage_proceed_confirmation "updating config file secrets"
 echo "Updating the configuration secrets"
