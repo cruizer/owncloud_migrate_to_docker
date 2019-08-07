@@ -4,6 +4,7 @@ started_at=$(date +"%Y%m%d-%H%M%S")
 db_backupfile=owncloud-dbbackup_${started_at}.bak
 stack_name=owncloudd
 echo "Owncloud migration script invoked at $started_at"
+# UTILITY FUNCTIONS
 # Returns the container ID for the given service name
 get_service_containerid(){
     docker ps -f "name=${stack_name}_$1" --format='{{.ID}}'
@@ -29,17 +30,27 @@ stage_proceed_confirmation(){
     done
 }
 # STEPS
-cat -<<EOF
-***This will migrate your current Owncloud installation a new deployment using the Owncloud official Docker image.***
-Before proceeding, please make sure, you have backed up the following to a safe place:
+cat <<EOF
+***This script migrates your current Owncloud installation to a new deployment using the
+official Owncloud Docker image.***
+
+Before proceeding, please make sure, you have backed up the following to a safe location:
+
 - The Owncloud *data* and *config* directories.
 - The Owncloud database.
 
-Do you want to proceed? (Y/N)
+You *MUST HAVE* your Owncloud file data directory at /mnt/data/files for this to work! Please
+refer to the README document for details on how you can move your file data if it is elsewhere (which is likely).
 EOF
-#read confirmation
 # Read current owncloud directory from user
-oc_currdir=/var/www/owncloud
+read -p "Please provide the absolute path of your Owncloud deployment:" \
+     oc_currdir # for me, it is /var/www/owncloud
+if [ -f "$oc_currdir/config/config.php" ];then
+    echo "The original config file is present, the path is verified."
+else
+    echo "The original config file is not found. Exiting!"
+    exit 1
+fi
 oc_backup_path=/root/oc-backup
 mkdir -p $oc_backup_path
 echo "Checking if the current database type is one of MySQL or MariaDB."
