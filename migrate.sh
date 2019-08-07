@@ -52,6 +52,7 @@ else
     exit 1
 fi
 oc_backup_path=/root/oc-backup
+echo "The Owncloud database backup file will be saved at $oc_backup_path"
 mkdir -p $oc_backup_path
 echo "Checking if the current database type is one of MySQL or MariaDB."
 oc_dbtype=$(oc_conf_read dbtype)
