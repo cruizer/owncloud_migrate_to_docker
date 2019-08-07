@@ -126,11 +126,39 @@ docker exec $(get_service_containerid owncloud) \
        -e "s#'secret'.*#'secret' => '$(oc_conf_read secret)',#" \
        -e "s#'secret'.*#'passwordsalt' => '$(oc_conf_read passwordsalt)',#" \
        /var/www/owncloud/config/config.php
-stage_proceed_confirmation "updating system fingerprint"
-echo "Updating system fingerprint after db restore"
-docker exec $(get_service_containerid owncloud) \
-       occ maintenance:data-fingerprint
-stage_proceed_confirmation "turning off maintenance mode"
-echo "Turning off Owncloud maintenance mode"
-docker exec $(get_service_containerid owncloud) \
-       occ maintenance:mode --off
+stage_proceed_confirmation "run occ upgrade manually"
+cat <<EOF
+In the next step, the script will take you to the shell of the Owncloud container.
+
+Please run the following commands manually, to finalize the migration:
+
+1) First, update the data fingerprint:
+
+    # occ maintenance:data-fingerprint
+
+2) Then, you need to execute the upgrade script. If it complains about upgrading
+   some of the apps downloaded from the OC Marketplace, just disable them as
+   instructed and run the upgrade command again. Once you are done with
+   the migration, you can log on with your "old" admin user and install the apps from
+   the marketplace.
+
+    # occ upgrade
+
+3) If everything went as planned, turn off maintenance mode:
+
+    # occ maintenance:mode --off
+
+Once you are done, verify, that you can access the Owncloud web interface
+and that your migrated data, users, etc. are migrated.
+
+If all is good, you can leave the container shell with:
+
+    # exit
+
+If something went wrong and you want to run the script again, don't forget to delete the
+Owncloud stack and volumes first!
+
+EOF
+echo "Loading the Owncloud container's shell:"
+docker exec -ti $(get_service_containerid owncloud) \
+       /bin/bash
