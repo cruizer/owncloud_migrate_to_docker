@@ -63,6 +63,7 @@ else
     	 compatible with the OC default MariaDB. Manual migration required."
     exit 1
 fi
+
 stage_proceed_confirmation "database backup"
 echo "Creating the database backup"
 mysqldump --single-transaction \
@@ -70,6 +71,7 @@ mysqldump --single-transaction \
 	  -u $(oc_conf_read dbuser) \
 	  -p$(oc_conf_read dbpassword) \
 	  $(oc_conf_read dbname) > ${oc_backup_path}/${db_backupfile}
+
 stage_proceed_confirmation "download docker-compose.yml"
 echo "Fetching docker-compose.yml for the Owncloud stack."
 wget -O docker-compose.yml https://raw.githubusercontent.com/owncloud-docker/server/master/docker-compose.yml
@@ -86,6 +88,7 @@ while true;do
 	echo "Port $newport is already used. Please provide a different one."
     fi
 done
+
 stage_proceed_confirmation "customizing the docker-compose.yml file"
 sed -i.orig \
     -e "s/^version:.*/version: \'3\'/" \
@@ -95,15 +98,18 @@ sed -i.orig \
     -e 's/${ADMIN_USERNAME}/admin/' \
     -e 's/${ADMIN_PASSWORD}/owncloudadmin/' \
     docker-compose.yml
+
 stage_proceed_confirmation "stack deployment on Docker"
 echo "Deploying the stack to Docker"
 docker stack deploy -c docker-compose.yml $stack_name
 echo "Waiting 5 minutes for the containers to stabilize..."
 sleep 300
+
 stage_proceed_confirmation "turning on maintenance mode"
 echo "Turning on Owncloud maintenance mode"
 docker exec $(get_service_containerid owncloud) \
        occ maintenance:mode --on
+
 stage_proceed_confirmation "copying the db backup to the volume"
 echo "Copying backup file to the db container volume"
 docker run \
@@ -112,6 +118,7 @@ docker run \
        --mount type=volume,src=${stack_name}_backup,dst=/backup \
        ubuntu \
        cp /mnt/${db_backupfile} /backup
+
 stage_proceed_confirmation "restoring the OC database"
 echo "Restoring the Owncloud database"
 docker exec $(get_service_containerid db) \
@@ -120,6 +127,7 @@ docker exec $(get_service_containerid db) \
        -u owncloud \
        -powncloud \
        owncloud < /var/lib/backup/${db_backupfile}"
+
 stage_proceed_confirmation "copying the OC file data"
 echo "Copying the file data to the container volume."
 docker run \
@@ -131,6 +139,7 @@ docker run \
        "cp /filesvol/files/.htaccess /tmp; \
        cp -rp /mnt/. /filesvol/files; \
        cp /tmp/.htaccess /filesvol/files"
+
 stage_proceed_confirmation "updating config file secrets"
 echo "Updating the configuration secrets"
 docker exec $(get_service_containerid owncloud) \
@@ -138,6 +147,7 @@ docker exec $(get_service_containerid owncloud) \
        -e "s#'secret'.*#'secret' => '$(oc_conf_read secret)',#" \
        -e "s#'secret'.*#'passwordsalt' => '$(oc_conf_read passwordsalt)',#" \
        /var/www/owncloud/config/config.php
+
 stage_proceed_confirmation "run occ upgrade manually"
 cat <<EOF
 In the next step, the script will take you to the shell of the Owncloud container.
