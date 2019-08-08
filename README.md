@@ -7,10 +7,11 @@
 
 - This migration script will only work if you are using *MySQL* or *MariaDb* as your Owncloud database backend.
 - The official Owncloud Docker image expects a volume mounted at `/mnt/data` inside the container, that contains your Owncloud file data in `/mnt/data/files`*. Hence, you need to migrate your file data from its current location to `/mnt/data` first, before you can start the migration. For instance, in my case, I have migrated the contents of `/var/www/owncloud/data` into `/mnt/data/files`. You should follow the [official documentation](https://doc.owncloud.com/server/admin_manual/maintenance/manually-moving-data-folders.html) for moving the data.
-  *Actually, there are two environment variables `OWNCLOUD_VOLUME_ROOT` and `OWNCLOUD_VOLUME_FILES` existing inside the [Owncloud container](https://github.com/owncloud-docker/base/blob/master/rootfs/etc/entrypoint.d/50-folders.sh), where the Owncloud root and file data paths are read from. However, most existing Owncloud deployments are running with `/var/www/owncloud` being the root for the deployment. This is a problem, as mounting the data volume to `/var/www/owncloud` inside the container would mask the files already existing there.
 - Create a backup of the current Owncloud `data` and `config` directories.
 - Create a backup of the Owncloud database.
 - Initialize the target Docker Swarm.
+
+*Actually, there are two environment variables `OWNCLOUD_VOLUME_ROOT` and `OWNCLOUD_VOLUME_FILES` existing inside the [Owncloud container](https://github.com/owncloud-docker/base/blob/master/rootfs/etc/entrypoint.d/50-folders.sh), where the Owncloud root and file data paths are read from. However, most existing Owncloud deployments are running with `/var/www/owncloud` being the root for the deployment. This is a problem, as mounting the data volume to `/var/www/owncloud` inside the container would mask the files already existing there.
 
 ## This is what the script does on a high level
 
