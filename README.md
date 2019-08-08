@@ -12,7 +12,7 @@
 - Create a backup of the Owncloud database.
 - Initialize the target Docker Swarm.
 
-## This is what the script will do on a high level
+## This is what the script does on a high level
 
 01. You need to provide the absolute path to the root directory of your current Owncloud deployment. The script needs this in order to extract information from the configuration file `config.php`.
 02. The script creates a backup of your Owncloud database.
