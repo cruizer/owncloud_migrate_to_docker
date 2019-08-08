@@ -64,6 +64,25 @@ else
     exit 1
 fi
 
+stage_proceed_confirmation "choose the domain name"
+domain_arr=($(oc_conf_read trusted_domains \
+	    | grep -E '\[[0-9]+\]' \
+	    | sed -E 's/.* ([A-Za-z0-9.-]+$)/\1/'))
+echo -e "Currently, you have the following trusted domains \
+configured in Owncloud:\n"
+for (( i=0; i<${#domain_arr[@]}; i++ ));do
+    echo -e "\t$i: ${domain_arr[$i]}"
+done
+echo -e "\nThe official Docker image only supports \
+one trusted domain, please pick the domain you wish to use."
+read -p "Please enter the number of the domain you wish to use [0]:" domain_selected
+if [ $domain_selected -ge 0 ] && [ $domain_selected -lt ${#domain_arr[@]} ];then
+    OWNCLOUD_DOMAIN=${domain_arr[$domain_selected]}
+    echo "You have selected the following domain: $OWNCLOUD_DOMAIN"
+else
+    echo "The index number selected is out of range!"
+    exit 1
+fi
 stage_proceed_confirmation "database backup"
 echo "Creating the database backup"
 mysqldump --single-transaction \
