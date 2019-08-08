@@ -74,7 +74,7 @@ mysqldump --single-transaction \
 
 stage_proceed_confirmation "download docker-compose.yml"
 echo "Fetching docker-compose.yml for the Owncloud stack."
-wget -O docker-compose.yml https://raw.githubusercontent.com/owncloud-docker/server/master/docker-compose.yml
+wget -O docker-compose.yml https://raw.githubusercontent.com/cruizer/owncloud_migrate_to_docker/master/docker-compose.yml
 echo "Customizing the stack config to match the current server."
 # Collecting the port config from the user
 while true;do
