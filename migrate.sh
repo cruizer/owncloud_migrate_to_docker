@@ -108,15 +108,22 @@ while true;do
     fi
 done
 
-stage_proceed_confirmation "customizing the docker-compose.yml file"
-sed -i.orig \
-    -e "s/^version:.*/version: \'3\'/" \
-    -e 's/${OWNCLOUD_VERSION}/'"$(oc_conf_read version | sed -E 's/([0-9]+\.[0-9]+).*/\1/')"'/' \
-    -e 's/${HTTP_PORT}/'"${newport}"'/' \
-    -e 's/${OWNCLOUD_DOMAIN}/'"$(hostname -f)"'/' \
-    -e 's/${ADMIN_USERNAME}/admin/' \
-    -e 's/${ADMIN_PASSWORD}/owncloudadmin/' \
-    docker-compose.yml
+stage_proceed_confirmation "export environment variables"
+export OWNCLOUD_DOMAIN # we have set the value already when the domain was picked
+export OWNCLOUD_VERSION=$(oc_conf_read version | sed -E 's/([0-9]+\.[0-9]+).*/\1/')
+export HTTP_PORT=${newport}
+export ADMIN_USERNAME=ocadmin
+export ADMIN_PASSWORD=
+cat <<EOF
+The following variables have been exported:
+
+OWNCLOUD_VERSION=$OWNCLOUD_VERSION
+HTTP_PORT=$HTTP_PORT
+OWNCLOUD_DOMAIN=$OWNCLOUD_DOMAIN
+ADMIN_USERNAME=$ADMIN_USERNAME
+ADMIN_PASSWORD=$ADMIN_PASSWORD
+
+EOF
 
 stage_proceed_confirmation "stack deployment on Docker"
 echo "Deploying the stack to Docker"
