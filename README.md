@@ -9,7 +9,7 @@
 - The official Owncloud Docker image expects a volume mounted at `/mnt/data` inside the container. Owncloud files data should be located in `/mnt/data/files`*. Hence, you need to migrate your files data from its current location to `/mnt/data`, **before** you can start the migration. For instance, have migrated the contents of `/var/www/owncloud/data` into `/mnt/data/files`. You should follow the [official documentation](https://doc.owncloud.com/server/admin_manual/maintenance/manually-moving-data-folders.html) for moving the data.
 - [Create a backup](https://doc.owncloud.com/server/10.2/admin_manual/maintenance/backup.html#backing-up-the-config-and-data-directories) of the current Owncloud `data` and `config` directories.
 - [Create a backup](https://doc.owncloud.com/server/10.2/admin_manual/maintenance/backup.html#backup-database) of the Owncloud database.
-- Initialize the target Docker Swarm.
+- Initialize the target [Docker Swarm](https://docs.docker.com/get-started/part4/).
 
 \* Actually, there are two environment variables `OWNCLOUD_VOLUME_ROOT` and `OWNCLOUD_VOLUME_FILES` existing inside the [Owncloud container](https://github.com/owncloud-docker/base/blob/master/rootfs/etc/entrypoint.d/50-folders.sh), where the Owncloud root and file data paths are read from. However, most existing Owncloud deployments are running with `/var/www/owncloud` being the root for the deployment. This is a problem, as mounting the data volume to `/var/www/owncloud` inside the container would mask the files already existing there.
 
