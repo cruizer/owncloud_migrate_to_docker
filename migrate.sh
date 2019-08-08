@@ -11,7 +11,7 @@ get_service_containerid(){
 }
 # Reads the Owncloud config item with the name passed as its argument.
 oc_conf_read(){
-    php -r "include \"${oc_currdir}/config/config.php\";print(\$CONFIG[\"$1\"]);"
+    php -r "include \"${oc_currdir}/config/config.php\";print_r(\$CONFIG[\"$1\"]);"
 }
 stage_proceed_confirmation(){
     while true;do
