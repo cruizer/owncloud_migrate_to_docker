@@ -102,19 +102,7 @@ else
     exit 1
 fi
 
-stage_proceed_confirmation "database backup"
-echo "Creating the database backup"
-mysqldump --single-transaction \
-	  -h $(oc_conf_read dbhost) \
-	  -u $(oc_conf_read dbuser) \
-	  -p$(oc_conf_read dbpassword) \
-	  $(oc_conf_read dbname) > ${oc_backup_path}/${db_backupfile}
-
-stage_proceed_confirmation "download docker-compose.yml"
-echo "Fetching docker-compose.yml for the Owncloud stack."
-wget -O docker-compose.yml https://raw.githubusercontent.com/cruizer/owncloud_migrate_to_docker/master/docker-compose.yml
-echo "Customizing the stack config to match the current server."
-# Collecting the port config from the user
+stage_proceed_confirmation "port configuration"
 while true;do
     echo -n "Enter the port you want to use for the Owncloud service: "
     read newport
@@ -126,6 +114,27 @@ while true;do
 	echo "Port $newport is already used. Please provide a different one."
     fi
 done
+
+stage_proceed_confirmation "customize stack name"
+read -p "Provide the stack name if you want to change it \
+from the default, otherwise press Enter [$stack_name]: " \
+     user_stack_name
+if [ -n "$user_stack_name" ];then
+    stack_name="$user_stack_name"
+fi
+echo "The stack name used will be: $stack_name"
+
+stage_proceed_confirmation "database backup"
+echo "Creating the database backup"
+mysqldump --single-transaction \
+	  -h $(oc_conf_read dbhost) \
+	  -u $(oc_conf_read dbuser) \
+	  -p$(oc_conf_read dbpassword) \
+	  $(oc_conf_read dbname) > ${oc_backup_path}/${db_backupfile}
+
+stage_proceed_confirmation "download docker-compose.yml"
+echo "Fetching docker-compose.yml for the Owncloud stack."
+wget -O docker-compose.yml https://raw.githubusercontent.com/cruizer/owncloud_migrate_to_docker/master/docker-compose.yml
 
 stage_proceed_confirmation "export environment variables"
 export OWNCLOUD_DOMAIN # we have set the value already when the domain was picked
