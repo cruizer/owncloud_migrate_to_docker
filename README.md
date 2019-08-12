@@ -22,15 +22,16 @@
 04. The script checks if your Docker Swarm is initialized.
 05. You need to pick one domain name for the Owncloud service from your current configuration. (The official image only supports one domain name.)
 06. You need to provide a port number, that should be used for the Owncloud service.
-07. The script downloads the `docker-compose.yml` file from this project.
-08. The script exports the environment variables used to fill in the placeholders in `docker-compose.yml`.
-09. The script deploys the stack on *Docker Swarm*.
-10. Once the Owncloud service has stabilized, the script turns on *maintenance mode*.
-11. The script copies the database backup to the MariaDB container.
-12. The script restores the database backup in the MariaDB container.
-13. The script copies the Owncloud file data onto the Owncloud container volume.
-14. The script updates the config file secrets.
-15. The script drops you into the Owncloud container shell, where you will complete the last 3 steps of the migration manually:
+07. You can change the default stack name *owncloudd*.
+08. The script downloads the `docker-compose.yml` file from this project.
+09. The script exports the environment variables used to fill in the placeholders in `docker-compose.yml`.
+10. The script deploys the stack on *Docker Swarm*.
+11. Once the Owncloud service has stabilized, the script turns on *maintenance mode*.
+12. The script copies the database backup to the MariaDB container.
+13. The script restores the database backup in the MariaDB container.
+14. The script copies the Owncloud file data onto the Owncloud container volume.
+15. The script updates the config file secrets.
+16. The script drops you into the Owncloud container shell, where you will complete the last 3 steps of the migration manually:
     - Update the file data fingerprint.
     - Run the Owncloud upgrade tool.
     - Turn maintenance mode off.
