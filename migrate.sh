@@ -72,6 +72,15 @@ else
     exit 1
 fi
 
+echo -n "Checking if Docker Swarm is initialized:"
+docker info | tr -d ' ' | grep '^Swarm:inactive'
+if [ $? -eq 0 ];then
+    echo " Swarm is NOT initialized!"
+    exit 1
+else
+    echo " OK!"
+fi
+
 stage_proceed_confirmation "choose the domain name"
 domain_arr=($(oc_conf_read trusted_domains \
 	    | grep -E '\[[0-9]+\]' \
