@@ -158,7 +158,7 @@ stage_proceed_confirmation "copying the OC file data"
 echo "Copying the file data to the container volume."
 docker run \
        --rm \
-       --mount type=bind,src=${oc_currdir}/data,dst=/mnt \
+       --mount type=bind,src=/mnt/data/files,dst=/mnt \
        --mount type=volume,src=${stack_name}_files,dst=/filesvol \
        ubuntu \
        /bin/bash -c \
