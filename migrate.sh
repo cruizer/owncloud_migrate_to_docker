@@ -141,7 +141,7 @@ export OWNCLOUD_DOMAIN # we have set the value already when the domain was picke
 export OWNCLOUD_VERSION=$(oc_conf_read version | sed -E 's/([0-9]+\.[0-9]+).*/\1/')
 export HTTP_PORT=${newport}
 export ADMIN_USERNAME=ocadmin
-export ADMIN_PASSWORD=
+export ADMIN_PASSWORD=`openssl rand -base64 10`
 cat <<EOF
 The following variables have been exported:
 
