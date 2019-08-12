@@ -3,6 +3,7 @@
 started_at=$(date +"%Y%m%d-%H%M%S")
 db_backupfile=owncloud-dbbackup_${started_at}.bak
 stack_name=owncloudd
+oc_filedata_dir=/mnt/data/files
 echo "Owncloud migration script invoked at $started_at"
 # UTILITY FUNCTIONS
 # Returns the container ID for the given service name
@@ -61,6 +62,13 @@ if [ $oc_dbtype == 'mysql' ] || [ $oc_dbtype == 'mariadb' ];then
 else
     echo "Database type check FAILED: $oc_dbtype is not \
     	 compatible with the OC default MariaDB. Manual migration required."
+    exit 1
+fi
+echo -n "Checking if files data is located at /mnt/data/files:"
+if [ -f "$oc_filedata_dir/.ocdata" ];then
+    echo " OK!"
+else
+    echo "FAILED!"
     exit 1
 fi
 
