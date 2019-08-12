@@ -142,16 +142,16 @@ export OWNCLOUD_VERSION=$(oc_conf_read version | sed -E 's/([0-9]+\.[0-9]+).*/\1
 export HTTP_PORT=${newport}
 export ADMIN_USERNAME=ocadmin
 export ADMIN_PASSWORD=`openssl rand -base64 10`
-cat <<EOF
-The following variables have been exported:
-
-OWNCLOUD_VERSION=$OWNCLOUD_VERSION
-HTTP_PORT=$HTTP_PORT
-OWNCLOUD_DOMAIN=$OWNCLOUD_DOMAIN
-ADMIN_USERNAME=$ADMIN_USERNAME
-ADMIN_PASSWORD=$ADMIN_PASSWORD
-
+cat <<EOF > .env
+export OWNCLOUD_VERSION=$OWNCLOUD_VERSION
+export HTTP_PORT=$HTTP_PORT
+export OWNCLOUD_DOMAIN=$OWNCLOUD_DOMAIN
+export ADMIN_USERNAME=$ADMIN_USERNAME
+export ADMIN_PASSWORD=$ADMIN_PASSWORD
 EOF
+echo "The following configuration has \
+been dumped into the file .env for future use.:"
+cat .env
 
 stage_proceed_confirmation "stack deployment on Docker"
 echo "Deploying the stack to Docker"
