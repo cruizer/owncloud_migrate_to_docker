@@ -64,6 +64,7 @@ else
     	 compatible with the OC default MariaDB. Manual migration required."
     exit 1
 fi
+
 echo -n "Checking if files data is located at /mnt/data/files:"
 if [ -f "$oc_filedata_dir/.ocdata" ];then
     echo " OK!"
@@ -100,6 +101,7 @@ else
     echo "The index number selected is out of range!"
     exit 1
 fi
+
 stage_proceed_confirmation "database backup"
 echo "Creating the database backup"
 mysqldump --single-transaction \
