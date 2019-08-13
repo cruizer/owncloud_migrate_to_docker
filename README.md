@@ -73,7 +73,7 @@ docker stack deploy -c docker-compose.yml <stackname>
 # turn off maintenance mode
 docker exec <stackname>_owncloud<tab> occ maintenance:mode --off
 ```
-**NOTE**: The container names are built up from the *stack name* and the *service name*, plus a randonmly generated identifier is appended to the name. Hence you need TAB complection to help you with the full name as indicated with `<tab>`.
+**NOTE**: The container names are built up from the *stack name* and the *service name*, plus a randomly generated identifier is appended to the name. Hence you need TAB complection to help you with the full name as indicated with `<tab>`.
 
 Make sure, to use the same *stack name*, so that the original database and owncloud data volumes are remounted.
 
