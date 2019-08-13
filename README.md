@@ -17,6 +17,17 @@
 
 ## This is what the script does on a high level
 
+To execute the script, it is recommended, that you create a working directory, where you download `migrate.sh`, then run it. For example:
+
+```bash
+mkdir /root/docker-owncloud/
+cd /root/docker-owncloud/
+wget -O https://raw.githubusercontent.com/cruizer/owncloud_migrate_to_docker/master/migrate.sh
+./migrate.sh
+```
+
+Both `docker-compose.yml` and `.env` will be saved in this directory.
+
 01. You need to provide the absolute path to the root directory of your current Owncloud deployment. The script needs this in order to extract information from the configuration file `config.php`.
 02. The script checks if your current database backend for Owncloud is one of *MariaDB* or *MySQL*.
 03. The script checks if your Owncloud files data is found at `/mnt/data/files` or not.
