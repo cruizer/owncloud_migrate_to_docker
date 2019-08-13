@@ -2,7 +2,7 @@
 
 - This script was a quick and dirty fix for my Owncloud migration needs. It should work for most standard single server Community Edition deployments, but your mileage may vary. No guarantee is provided.
 - If you have an Enterprise or CE system that has custom elements to its deployment or configuration, it is very likely you will have to customize some parts of this to make it working for you.
-- This script was used and tested using the *root* user. If you are using a different user to manage your Docker Swarm, you migth need to modify the script in some places.
+- This script was used and tested using the *root* user. If you are using a different user to manage your Docker Swarm, you migth need to modify the script in some places. Alternatively, you should also be able to get away with using `sudo` instead.
 - For minimum risk, the script copies the Owncloud data to the Docker volume and leaves the original location intact. This means however, that you need to have enough disk space to have two copies of your data on the system. If you just want to use the existing data on your system, it should be possible using a bind mount, but then you need to adjust the `docker-compose.yml` configuration and remove the step, where the files data is being copied.
 
 ## Prerequisites
