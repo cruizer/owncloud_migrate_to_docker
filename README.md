@@ -20,9 +20,13 @@
 To execute the script, it is recommended, that you create a working directory, where you download `migrate.sh`, then run it. For example:
 
 ```bash
+# Create the working directory (example)
 mkdir /root/docker-owncloud/
+# Change to the working directory
 cd /root/docker-owncloud/
-wget -O https://raw.githubusercontent.com/cruizer/owncloud_migrate_to_docker/master/migrate.sh
+# Download the migration script
+wget -O migrate.sh https://raw.githubusercontent.com/cruizer/owncloud_migrate_to_docker/master/migrate.sh
+# Execute
 ./migrate.sh
 ```
 
