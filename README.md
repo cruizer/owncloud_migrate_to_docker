@@ -62,3 +62,29 @@ docker stack deploy -c docker-compose.yml <stackname>
 ```
 
 Make sure, to use the same *stack name*, so that the original database and owncloud data volumes are remounted.
+
+## Upgrades
+
+Since I am using *Docker Swarm*, the upgrade procedure contains similar steps as shown in the [official documentation](https://doc.owncloud.com/server/admin_manual/installation/docker/#upgrading-owncloud-on-docker), but the commands are slightly different:
+
+```bash
+# Enable maintenance mode
+docker exec <stackname>_owncloud<tab> occ maintenance:mode --on
+# Backup the database
+docker exec <stackname>_db<tab> backup
+# Remove the stack
+docker stack rm <stackname>
+# Navigate to the stack working directory (example)
+cd /root/docker-owncloud/
+# Update the .env file with the new version
+sed -i 's/^export OWNCLOUD_VERSION=.*$/export OWNCLOUD_VERSION=<newVersion>/' .env
+# Source the environment file
+. .env
+# Deploy the stack
+docker stack deploy -c docker-compose.yml <stackname>
+# After the stack is deployed the occ upgrade is automatically executed
+# If you see the container being in a rolling restart, you can check the status with:
+docker logs <stackname>_owncloud<tab> --follow --timestamps
+# Otherwise wait for 5 minutes and if the container is stable, disable maintenance mode
+docker exec <stackname>_owncloud<tab> occ maintenance:mode --on
+```
