@@ -55,11 +55,18 @@ Both `docker-compose.yml` and `.env` will be saved in this directory.
 In case you want to redeploy the stack for some reason, you can do:
 
 ```bash
+# Enable maintenance mode
+docker exec <stackname>_owncloud<tab> occ maintenance:mode --on
+# Remove the stack
 docker stack rm <stackname>
+# Navigate to the stack working directory (example)
 cd /root/docker-owncloud/
+# Source the environment file
 . .env
+# Deploy the stack
 docker stack deploy -c docker-compose.yml <stackname>
 ```
+**NOTE**: The container names are built up from the *stack name* and the *service name*, plus a randonmly generated identifier is appended to the name. Hence you need TAB complection to help you with the full name as indicated with `<tab>`.
 
 Make sure, to use the same *stack name*, so that the original database and owncloud data volumes are remounted.
 
@@ -88,3 +95,5 @@ docker logs <stackname>_owncloud<tab> --follow --timestamps
 # Otherwise wait for 5 minutes and if the container is stable, disable maintenance mode
 docker exec <stackname>_owncloud<tab> occ maintenance:mode --on
 ```
+
+**NOTE**: The container names are built up from the *stack name* and the *service name*, plus a randonmly generated identifier is appended to the name. Hence you need TAB complection to help you with the full name as indicated with `<tab>`.
