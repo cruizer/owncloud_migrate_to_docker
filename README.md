@@ -93,7 +93,7 @@ docker stack deploy -c docker-compose.yml <stackname>
 # If you see the container being in a rolling restart, you can check the status with:
 docker logs <stackname>_owncloud<tab> --follow --timestamps
 # Otherwise wait for 5 minutes and if the container is stable, disable maintenance mode
-docker exec <stackname>_owncloud<tab> occ maintenance:mode --on
+docker exec <stackname>_owncloud<tab> occ maintenance:mode --off
 ```
 
 **NOTE**: The container names are built up from the *stack name* and the *service name*, plus a randonmly generated identifier is appended to the name. Hence you need TAB complection to help you with the full name as indicated with `<tab>`.
