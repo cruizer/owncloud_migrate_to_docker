@@ -49,3 +49,16 @@ Both `docker-compose.yml` and `.env` will be saved in this directory.
     - Update the file data fingerprint.
     - Run the Owncloud upgrade tool.
     - Turn maintenance mode off.
+
+## Redeploying the stack
+
+In case you want to redeploy the stack for some reason, you can do:
+
+```bash
+docker stack rm <stackname>
+cd /root/docker-owncloud/
+. .env
+docker stack deploy -c docker-compose.yml <stackname>
+```
+
+Make sure, to use the same *stack name*, so that the original database and owncloud data volumes are remounted.
