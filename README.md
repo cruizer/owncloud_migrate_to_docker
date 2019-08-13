@@ -15,7 +15,7 @@
 
 \* Actually, there are two environment variables `OWNCLOUD_VOLUME_ROOT` and `OWNCLOUD_VOLUME_FILES` existing inside the [Owncloud container](https://github.com/owncloud-docker/base/blob/master/rootfs/etc/entrypoint.d/50-folders.sh), where the Owncloud root and file data paths are read from. However, most existing Owncloud deployments are running with `/var/www/owncloud` being the root for the deployment. This is a problem, as mounting the data volume to `/var/www/owncloud` inside the container would mask the files already existing there.
 
-## This is what the script does on a high level
+## Executing the migration
 
 To execute the script, it is recommended, that you create a working directory, where you download `migrate.sh`, then run it. For example:
 
@@ -27,6 +27,8 @@ wget -O https://raw.githubusercontent.com/cruizer/owncloud_migrate_to_docker/mas
 ```
 
 Both `docker-compose.yml` and `.env` will be saved in this directory.
+
+### Migration steps
 
 01. You need to provide the absolute path to the root directory of your current Owncloud deployment. The script needs this in order to extract information from the configuration file `config.php`.
 02. The script checks if your current database backend for Owncloud is one of *MariaDB* or *MySQL*.
