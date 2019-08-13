@@ -69,6 +69,9 @@ cd /root/docker-owncloud/
 . .env
 # Deploy the stack
 docker stack deploy -c docker-compose.yml <stackname>
+# Wait for the container to stabilize for 5 minutes, then
+# turn off maintenance mode
+docker exec <stackname>_owncloud<tab> occ maintenance:mode --off
 ```
 **NOTE**: The container names are built up from the *stack name* and the *service name*, plus a randonmly generated identifier is appended to the name. Hence you need TAB complection to help you with the full name as indicated with `<tab>`.
 
